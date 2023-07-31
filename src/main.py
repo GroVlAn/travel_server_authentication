@@ -3,6 +3,8 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
+from auth.router import router as auth_router
+
 version = '0.0.1'
 
 app = FastAPI(
@@ -10,7 +12,7 @@ app = FastAPI(
     version=version,
 )
 
-origins = ["*"]
+origins = ["http://localhost:4200"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,8 +37,9 @@ app.include_router(
     main_router
 )
 
-
-
+app.include_router(
+    auth_router
+)
 
 
 if __name__ == '__main__':
