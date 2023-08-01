@@ -1,18 +1,15 @@
 from datetime import timedelta, datetime
 from typing import Optional
 
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from jose import jwt
-from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from auth.abstract_classes import ABCUserDB, ABCManager
 from auth.exceptions import UserExist
 from auth.password_handler import PasswordHandler
 from auth.shemas import UserRead, UserCreate
-from auth.user_db import UserDB
 from config import SECRET, ALGORITHM
-from database import get_async_session
 from schemas.request import MainResponse
 
 
@@ -55,6 +52,8 @@ class Manager(ABCManager):
         """
         existed_user_by_email = await self.user_db.exist(email=user_created.email)
         existed_user_by_username = await self.user_db.exist(username=user_created.username)
+
+        self.password_handler.validate_password(user_created.password)
 
         if existed_user_by_email or existed_user_by_username:
             raise UserExist('User exist')

@@ -60,8 +60,6 @@ class UserDB(ABCUserDB):
             email: str = None,
             username: str = None
     ) -> bool:
-        if not user_id and not email and not username:
-            raise Exception('user_id or email or username must be not empty')
 
         if user_id:
             query = select(User).where(User.c.id == user_id)

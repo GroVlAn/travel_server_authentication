@@ -1,7 +1,8 @@
+import re
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel, Json
+from pydantic import BaseModel, Json, EmailStr, field_validator
 
 
 class Role(BaseModel):
@@ -14,8 +15,8 @@ class Role(BaseModel):
 
 class UserCreate(BaseModel):
     username: str
-    email: str
-    password: Optional[str] = None
+    email: EmailStr
+    password: str
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     middle_name: Optional[str] = None
